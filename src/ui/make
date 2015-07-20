@@ -1,0 +1,8 @@
+#current directory: Manu_OS/src/ui
+echo src/ui
+cd ui
+i586-elf-gcc -I ../include -o ui.o -c ui.c \
+ -Wall -Wextra -Werror -nostdlib -fno-builtin -nostartfiles -nodefaultlibs
+cp *.o ../
+rm *.o
+cd ..

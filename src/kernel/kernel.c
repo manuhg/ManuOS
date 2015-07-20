@@ -1,0 +1,98 @@
+#include <stdio.h>
+#define _part_of_kernel
+#include <kernel/cpu.h>
+#include <kernel/pci.h>
+#include <kernel/acpi.h>
+#include <kernel/interrupts.h>
+#include <kernel/memory.h>
+#include <kernel/timer.h>
+#include <drivers/kbd.h>
+#include <drivers/mouse.h>
+#include <drivers/ata.h>
+#include <ui/ui.h>
+
+
+#define internal_k
+#include "kernel.h"
+
+extern void acpiPowerOff(void);
+void kernel_main() 
+{
+	_cli();kbd_set_leds(0);
+	ui_screen_init();
+	init_hardware();
+	while(getch()!='\n');
+	ui_main();
+	mprintf(error_text_colour,"\n User Interface Manager Exit\nSystem is halting");
+	while(1);
+}
+void init_hardware()
+{
+	init_gdt();
+	init_idt();
+	init_devices();
+	ui_init();
+}
+
+void init_devices()
+{
+	_cli();
+	acpi_init();
+	kbd_init();
+	mem_init();
+	timer_pic_init(timer_freq);
+	//cpu_init();
+	pci_init();
+	//init_mouse();
+	_sti();
+	getch();
+	//acpiPowerOff();
+	//ata_init();
+}
+
+void print_multiboot(multiboot_info_t *m)
+{
+	uint64 total=(m->mem_lower*1024)+(m->mem_upper*1024);
+	mem_size=total;
+	#ifdef enable_proceedings
+	mprintf(special_text_colour,"\n\t Total memory = ");
+	printf("%d Mb ",(total/1048576));
+	if(((total/1048576)/1024))
+	 printf("or %d Gb",((total/1048576)/1024));
+	#else
+	if(m->mem_upper){}
+	#endif
+}
+#ifndef _nsound
+void start_beep()
+{
+	out(0x61,3);
+}
+void stop_beep()
+{
+	out(0x61,0);
+} 
+void play_sound(uint32 nFrequence)
+{
+	uint32 Div;
+ 	uint8 tmp;
+ 	Div = 1193180 / nFrequence;
+ 	out(0x43, 0xb6);
+ 	out(0x42, (uint8) (Div) );
+ 	out(0x42, (uint8) (Div >> 8));
+ 	tmp = in(0x61);
+  	if(tmp!=(tmp|3))
+  	  out(0x61,tmp|3);
+ }
+void nosound()
+{
+	uint8 tmp=(inb(0x61)&0xFC); 
+ 	out(0x61,tmp);
+}
+void beep()
+{
+	play_sound(1000);
+	milliDelay(10);
+	nosound();
+}
+#endif

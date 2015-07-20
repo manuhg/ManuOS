@@ -1,0 +1,10 @@
+#current directory: Manu_OS/src/apps
+echo src/apps
+cd apps
+i586-elf-gcc -I ../include -o app_list.o -c app_list.c \
+ -Wall -Wextra -Werror -nostdlib -fno-builtin -nostartfiles -nodefaultlibs
+i586-elf-gcc -I ../include -o apps.o -c apps.c \
+ -Wall -Wextra  -Werror -nostdlib -fno-builtin -nostartfiles -nodefaultlibs
+cp *.o ../
+rm *.o
+cd ..

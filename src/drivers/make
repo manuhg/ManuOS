@@ -1,0 +1,10 @@
+#current directory: Manu_OS/src/drivers
+echo src/drivers
+cd drivers
+./ata/make
+./kbd/make
+./mouse/make
+./v86/make
+cp *.o ../
+rm *.o
+cd ..
