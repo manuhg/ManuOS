@@ -1,0 +1,13 @@
+#current directory: Manu_OS/src/lib
+echo src/lib
+cd lib
+nasm -f elf -o _lib_asm_funcs.o asm_funcs.asm
+i586-elf-gcc -I ../include -o _lib_functions.o -c functions.c -Wall -Wextra -Werror -nostdlib -fno-builtin -nostartfiles -nodefaultlibs
+i586-elf-gcc -I ../include -o _lib_portio.o -c portio.c -Wall -Wextra -Werror -nostdlib -fno-builtin -nostartfiles -nodefaultlibs
+i586-elf-gcc -I ../include -o _lib_printf.o -c printf.c -Wall -Wextra -Werror
+i586-elf-gcc -I ../include -o _lib_kbd_libfuncs.o -c kbd_libfuncs.c -Wall -Wextra -Werror -nostdlib -fno-builtin -nostartfiles -nodefaultlibs
+i586-elf-gcc -I ../include -o _lib_mem_libfuncs.o -c mem_libfuncs.c -Wall -Wextra -Werror -nostdlib -fno-builtin -nostartfiles -nodefaultlibs
+i586-elf-gcc -I ../include -o _lib_ui_funcs.o -c ui_funcs.c -Wall -Wextra -Werror -nostdlib -fno-builtin -nostartfiles -nodefaultlibs
+cp *.o ../
+rm *.o
+cd ..

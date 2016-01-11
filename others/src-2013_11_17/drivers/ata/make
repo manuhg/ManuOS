@@ -1,0 +1,9 @@
+#current directory: Manu_OS/src/drivers/ata
+echo src/drivers/ata
+cd ata
+i586-elf-gcc -I ../../include -o ata.o -c ata.c \
+-Wall -Wextra -Werror -nostdlib -fno-builtin -nostartfiles -nodefaultlibs 
+
+cp *.o ../
+rm *.o
+cd ..

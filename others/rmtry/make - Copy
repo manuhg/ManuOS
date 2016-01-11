@@ -1,0 +1,87 @@
+# current directory: E:/OSs/Manu_OS/Manu_OS/src 
+
+# echo removing directory ../output
+rm ../output/*.*
+rm -rf ../output
+mkdir ../output
+
+# echo compiling assembly source at kernel/
+nasm -f elf -o ../output/__loader.o kernel/loader.asm
+nasm -f elf -o ../output/cpu_asm.o kernel/cpu_asm.asm  
+nasm -f elf -o ../output/interrupts_asm.o kernel/interrupts_asm.asm
+# echo compiling assembly source at drivers/
+nasm -f elf -o ../output/v86_asm.o drivers/v86/v86_asm.asm
+# echo compiling assembly source at lib/
+nasm -f elf -o ../output/asm_funcs.o lib/asm_funcs.asm
+
+
+# echo removing header files at include/kernel/
+rm include/kernel/*.*
+# echo removing header files at include/drivers/
+rm include/drivers/*.*
+rm include/apps/*.*
+rm -rf include/drivers
+rm -rf include/kernel
+rm -rf include/apps
+
+mkdir include/drivers
+mkdir include/kernel
+mkdir include/apps
+
+# echo copying header new files header to include/kernel/
+cp kernel/*.h include/kernel/
+cp kernel/ui/*.h include/kernel/
+#cp kernel/processes/*.h include/kernel/
+# echo copying header new files header to include/drivers/
+cp drivers/ata/*.h include/drivers/
+cp drivers/kbd/*.h include/drivers/
+cp drivers/mouse/*.h include/drivers/
+cp drivers/v86/*.h include/drivers/
+
+# echo copying header new files header to include/
+cp lib/*.h include/
+
+cp apps/*.h include/apps/
+
+# echo compiling c source at kernel/
+i586-elf-gcc -I include -o ../output/_kernel.o -c kernel/kernel.c -Wall -Wextra -Werror -nostdlib -fno-builtin -nostartfiles -nodefaultlibs 
+i586-elf-gcc -I include -o ../output/interrupts.o -c kernel/interrupts.c  -Wall -Wextra -Werror -nostdlib -fno-builtin -nostartfiles -nodefaultlibs
+i586-elf-gcc -I include -o ../output/memory.o -c kernel/memory.c  -Wall -Wextra -Werror -nostdlib -fno-builtin -nostartfiles -nodefaultlibs
+i586-elf-gcc -I include -o ../output/ui.o -c kernel/ui/ui.c  -Wall -Wextra -Werror -nostdlib -fno-builtin -nostartfiles -nodefaultlibs
+i586-elf-gcc -I include -o ../output/cpu.o -c kernel/cpu.c -Wall -Wextra -Werror -nostdlib -fno-builtin -nostartfiles -nodefaultlibs 
+i586-elf-gcc -I include -o ../output/pci.o -c kernel/pci.c  -Wall -Wextra -Werror -nostdlib -fno-builtin -nostartfiles -nodefaultlibs
+#i586-elf-gcc -I include -o ../output/processes.o -c kernel/processes/processes.c  -Wall -Wextra -Werror -nostdlib -fno-builtin -nostartfiles -nodefaultlibs
+
+
+# echo compiling c source at drivers/
+i586-elf-gcc -I include -o ../output/kbd.o -c drivers/kbd/kbd.c  -Wall -Wextra -Werror -nostdlib -fno-builtin -nostartfiles -nodefaultlibs
+i586-elf-gcc -I include -o ../output/mouse.o -c drivers/mouse/mouse.c  -Wall -Wextra -Werror -nostdlib -fno-builtin -nostartfiles -nodefaultlibs
+i586-elf-gcc -I include -o ../output/ata.o -c drivers/ata/ata.c  -Wall -Wextra -Werror -nostdlib -fno-builtin -nostartfiles -nodefaultlibs
+i586-elf-gcc -I include -o ../output/v86.o -c drivers/v86/v86.c  -Wall -Wextra -Werror -nostdlib -fno-builtin -nostartfiles -nodefaultlibs
+
+# echo compiling c source at apps/
+i586-elf-gcc -I include -o ../output/app_list.o -c apps/app_list.c  -Wall -Wextra -Werror -nostdlib -fno-builtin -nostartfiles -nodefaultlibs
+i586-elf-gcc -I include -o ../output/apps.o -c apps/apps.c -Wall -Wextra  -Werror -nostdlib -fno-builtin -nostartfiles -nodefaultlibs
+
+# echo compiling c source at lib/
+i586-elf-gcc -I include -o ../output/functions.o -c lib/functions.c  -Wall -Wextra -Werror -nostdlib -fno-builtin -nostartfiles -nodefaultlibs
+i586-elf-gcc -I include -o ../output/ports.o -c lib/ports.c  -Wall -Wextra -Werror -nostdlib -fno-builtin -nostartfiles -nodefaultlibs
+
+cd ..
+cp imp_files/* output/ 
+cd output
+# echo linking object files
+i586-elf-ld -T ../src/linker.ld -o kernel.bin *.o
+# echo kernel image is ready!
+# cat stage1 stage2 pad kernel.bin > kernel.img
+cd .. 
+cd ..
+rm kernel.img
+rm kernel.bin
+cp Manu_OS/output/kernel.img kernel.img
+cp Manu_OS/output/kernel.bin kernel.bin
+# echo "done :)"
+# echo executing the Manu_OS on qemu and bochs emulators
+# echo "done :D" 
+
+E:/OSs/Manu_OS/emulators/qemu/qemu.exe -fda kernel.img

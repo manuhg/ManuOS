@@ -1,0 +1,9 @@
+#current directory: Manu_OS/src/kernel/pci
+echo src/kernel/pci
+cd pci
+i586-elf-gcc -I ../../include -o _kernel_pci.o -c pci.c \
+ -Wall -Wextra -Werror -nostdlib -fno-builtin -nostartfiles -nodefaultlibs 
+
+cp *.o ../
+rm *.o
+cd ..

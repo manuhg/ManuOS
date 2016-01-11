@@ -1,0 +1,12 @@
+#current directory: Manu_OS/src/kernel/cpu
+echo src/kernel/cpu
+cd cpu
+nasm -f elf -o _kernel_cpu_asm.o cpu_asm.asm
+i586-elf-gcc -I ../../include -o _kernel_cpu_c.o -c cpu.c \
+-Wall -Wextra -Werror -nostdlib -fno-builtin -nostartfiles -nodefaultlibs 
+i586-elf-gcc -I ../../include -o _kernel_cpuid_c.o -c cpuid_.c \
+-Wall -Wextra -Werror -nostdlib -fno-builtin -nostartfiles -nodefaultlibs 
+
+cp *.o ../../../output/
+rm *.o
+cd ..

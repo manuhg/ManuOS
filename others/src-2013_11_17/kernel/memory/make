@@ -1,0 +1,12 @@
+#current directory: Manu_OS/src/kernel/memory
+echo src/kernel/memory
+cd memory
+nasm -f elf -o _kernel_memory_asm.o memory_asm.asm
+
+i586-elf-gcc -I ../../include -o _kernel_memory_c.o -c memory.c \
+ -Wall -Wextra -Werror -nostdlib -fno-builtin -nostartfiles -nodefaultlibs
+i586-elf-gcc -I ../../include -o _kernel_memory_pae_c.o -c memory_pae.c \
+ -Wall -Wextra -Werror -nostdlib -fno-builtin -nostartfiles -nodefaultlibs
+cp *.o ../../../output/
+rm *.o
+cd ..

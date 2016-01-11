@@ -1,0 +1,41 @@
+#current directory: Manu_OS/src
+#source directory: Manu_OS/src
+#output directory: Manu_OS/output
+
+echo src
+
+rm -rf ../output
+mkdir ../output
+
+rm -rf include
+mkdir include
+
+mkdir include/drivers
+mkdir include/drivers/kbd_lyts
+mkdir include/kernel
+mkdir include/ui
+mkdir include/apps
+
+cp kernel/*.h include/kernel/
+cp kernel/acpi_efi/*.h include/kernel/
+cp kernel/cpu/*.h include/kernel/
+cp kernel/pci/*.h include/kernel/
+cp kernel/memory/*.h include/kernel/
+
+cp drivers/ata/*.h include/drivers/
+cp drivers/kbd/*.h include/drivers/
+cp drivers/kbd/kbd_lyts/*.h include/drivers/kbd_lyts/
+cp drivers/mouse/*.h include/drivers/
+cp drivers/v86/*.h include/drivers/
+
+cp lib/*.h include/
+cp ui/*.h include/ui/
+cp apps/*.h include/apps/
+
+./lib/make
+./kernel/make
+./drivers/make
+./ui/make
+./apps/make
+cp *.o ../output/
+rm *.o

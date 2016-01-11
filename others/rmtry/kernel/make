@@ -1,0 +1,22 @@
+#current directory: Manu_OS/src/kernel
+echo src/kernel
+cd kernel
+
+nasm -f elf -o ___loader.o loader.asm
+nasm -f elf -o _kernel_interrupts_asm.o interrupts_asm.asm
+nasm -f elf -o _kernel_rwregs.o rwregs.asm
+
+
+i586-elf-gcc -I ../include -o __kernel.o -c kernel.c \
+ -Wall -Wextra -Werror -nostdlib -fno-builtin -nostartfiles -nodefaultlibs
+i586-elf-gcc -I ../include -o _kernel_interrupts.o -c interrupts.c \
+ -Wall -Wextra -Werror -nostdlib -fno-builtin -nostartfiles -nodefaultlibs
+ i586-elf-gcc -I ../include -o _kernel_timer.o -c timer.c \
+ -Wall -Wextra -Werror -nostdlib -fno-builtin -nostartfiles -nodefaultlibs
+ 
+./cpu/make
+./memory/make
+./pci/make
+cp *.o ../
+rm *.o
+cd ..

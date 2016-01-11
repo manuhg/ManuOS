@@ -1,0 +1,9 @@
+#current directory: Manu_OS/src/drivers/mouse
+echo src/drivers/mouse
+cd mouse
+i586-elf-gcc -I ../../include -o mouse.o -c mouse.c \
+-Wall -Wextra -Werror -nostdlib -fno-builtin -nostartfiles -nodefaultlibs 
+
+cp *.o ../
+rm *.o
+cd ..
