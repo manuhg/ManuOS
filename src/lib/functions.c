@@ -235,9 +235,8 @@ int sctoint(char *str)// works correctly //scan for all numbers in the string
 int intat(int a, int pos) // works correctly
 {
 	
-	int i,aa,len,num; 
-	len=intlen(a); 
-	i=len;
+	int aa,len,num; 
+	len=intlen(a);
 	aa=a;
 	if(pos>len)
 		return error;
@@ -358,15 +357,15 @@ double todecimal(int a)// works correctly
 
 double todouble(char *str) // works correctly
 { 
-	double a;char *flp,*cpstr;
+	double a;char /**flp,*/*cpstr;
 	a=0;
 	cpstr=str;
 	a=strtoint(str);
 	str=cpstr;
 	while(*str!='.')
 		str+=1;
-	if(*str=='.')
-		flp=str;
+	//if(*str=='.')
+		//flp=str;
 	str+=1;
 	a+=todecimal(strtoint(str));
 	return a;
@@ -374,15 +373,15 @@ double todouble(char *str) // works correctly
 
 double todouble_mov(char **aa) // works correctly
 { 
-	double a;char *flp,*cpstr,*str;
+	double a;char /**flp,*/*cpstr,*str;
 	a=0;str=*aa;
 	cpstr=str;
 	a=strtoint(str);
 	str=cpstr;
 	while(*str!='.')
 		str+=1;
-	if(*str=='.')
-		flp=str;
+	//if(*str=='.')
+	//	flp=str;
 	str+=1;
 	a+=todecimal(strtoint_mov(&str));
 	*aa=str;

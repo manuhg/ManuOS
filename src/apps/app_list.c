@@ -29,8 +29,8 @@ int load_apps()
 }
 int call_app(char *app_name)
 {
-	int i;char called;
-	i=0;called=0;
+	int i;//char called;
+	i=0;//called=0;
 	while(i<no_of_apps)
 	{
 		if(!strcmp(app_name,app_names[i]))

@@ -2,6 +2,9 @@
 #source directory: Manu_OS/src
 #output directory: Manu_OS/output
 
+if [[ "$OSTYPE" == "linux-gnu" ]]; then
+export PATH="home/gk1000/opt/cross/bin:$PATH"
+fi
 echo src
 
 rm -rf ../output

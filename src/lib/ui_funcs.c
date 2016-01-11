@@ -144,9 +144,9 @@ void move_cursor(int distance)
   
 void move_cursor_(int distance)
 {
-	int offset,tmp;
+	int /*offset,*/tmp;
     vidram+=distance*2;    
-    offset=(vidram-(uchar *)vdu_mem)/2;
+    //offset=(vidram-(uchar *)vdu_mem)/2;
     if((uint32)vidram>=(vdu_mem+4000))
     {
 		tmp=((uint32)vidram-(vdu_mem+4000))/2;
